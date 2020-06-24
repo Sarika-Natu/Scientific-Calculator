@@ -1,0 +1,122 @@
+// Code your design here
+module calc_fsm (operand1, operand2, operator, result, calcmd, CLK, reset);
+  
+  input [3:0]operand1, operand2;
+  input [2:0]operator;
+  input calcmd;
+  input CLK, reset;
+  output [31:0]result;
+  
+  reg [31:0]result;
+  
+  parameter resST = 3'b000;					//operator mode states
+  parameter addST = 3'b001;
+  parameter subST = 3'b010;
+  parameter mulST = 3'b011;
+  parameter divST = 3'b100;
+  parameter modST = 3'b101;
+  parameter pwrST = 3'b110;
+  parameter perST = 3'b111;
+  
+  reg [2:0]ns_op;							// state declaration for operation
+  reg [2:0]cs_op = 3'b000;
+  
+  parameter custom = 1'b0;					//calculator mode states
+  parameter scientific = 1'b1;
+  
+  reg ns_calcmd;							//state declaration for calculator mode
+  reg cs_calcmd = 1'b0;
+  
+  always@(posedge CLK)
+  begin: SEQ								//sequential always block
+    if(reset)begin
+      cs_op <= resST;
+      cs_calcmd <= 1'b0;
+    end
+    else begin
+      cs_op <= operator;
+      cs_calcmd <= calcmd;
+    end
+   end
+  
+  
+   always@(*)
+   begin: COMB								//combinational always block
+     case(cs_calcmd)
+       
+       custom:begin							//case start for custom operation 
+         case(cs_op)
+      
+          resST: begin
+            ns_op = resST;
+          end
+
+          addST: begin						//case for addition
+            result = operand1 + operand2;
+            ns_op = resST;
+          end
+
+          subST: begin						//case for subtraction
+            result = operand1 - operand2;
+            ns_op = resST;
+          end
+
+          mulST: begin						//case for multiplication
+            result = operand1 * operand2;
+            ns_op = resST;
+          end
+
+          divST: begin						//case for division
+            result = operand1 / operand2;
+            ns_op = resST;
+          end
+           
+           default: begin
+             ns_op = resST;
+           end
+           
+          endcase
+         ns_calcmd = cs_calcmd;
+       end									//case end for custom operation
+       
+       
+       scientific:begin						//case start for scientific operation
+         case(cs_op)
+      
+          resST: begin
+            ns_op = resST;
+          end
+
+          modST: begin						//case for modulo	
+            result = operand1 % operand2;
+            ns_op = resST;
+          end
+
+           pwrST: begin						//case for power
+            result = operand1 ** operand2;
+            ns_op = resST;
+          end
+
+          perST: begin						//case for percentage
+            real res;
+            res = $itor(operand1) / $itor(operand2);
+            result = $rtoi(res *100);
+            ns_op = resST;
+          end
+           
+           default: begin
+             ns_op = resST;
+           end	
+           
+          endcase
+         ns_calcmd = cs_calcmd;
+       end									//case end for scientific operation
+       
+       default:begin
+         ns_calcmd = cs_calcmd;
+       end
+
+    endcase
+  end
+  
+endmodule

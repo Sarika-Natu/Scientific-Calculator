@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at input_calc.v(31): always construct contains both blocking and non-blocking assignments File: C:/Users/soumy/Downloads/switch_calc_v1/switch_calc/input_calc.v Line: 31
+Warning (10268): Verilog HDL information at clock_divider.v(20): always construct contains both blocking and non-blocking assignments File: C:/Users/soumy/Downloads/switch_calc_v1/switch_calc/clock_divider.v Line: 20

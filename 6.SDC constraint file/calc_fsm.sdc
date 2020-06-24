@@ -1,0 +1,1 @@
+create_clock -period 20 {get_ports CLK}/Users/sarika/Documents/SJSU/Courses/EE271_DigitalDesignAndSynthesis/Project/SAHU_NATU_AWASTHI/Scientific Calculator/2.DE-10 Lite Scientific Calculator full project/switch_calc.qpf

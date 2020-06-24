@@ -1,0 +1,12 @@
+module switch_calc (operand1, operand2, operator, result, calcmd, CLK, reset);
+
+  input [3:0]operand1, operand2;
+  input [2:0]operator;
+  input calcmd;
+  input CLK, reset;
+  output [31:0]result;
+  
+
+
+
+calc_fsm f1 (operand1, operand2, operator, result, calcmd, CLK, reset);
